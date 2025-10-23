@@ -1,5 +1,6 @@
 package com.itheima.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,7 +15,9 @@ import com.itheima.mapper.EmpMapper;
 import com.itheima.service.EmpService;
 import com.itheima.utils.JwtUtils;
 import com.itheima.vo.EmpListVO;
+import com.itheima.vo.EmpSelectByIdVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 @Slf4j
 @Service
 @SuppressWarnings("all")
@@ -34,6 +39,18 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
     private EmpMapper empMapper;
     @Autowired
     private EmpExprMapper empExprMapper;
+    @Override
+    public EmpSelectByIdVO selectById(Integer id) {
+        //根据id查询员工信息
+        Emp emp = empMapper.selectById(id);
+        //把同名的属性拷贝到vo中
+        EmpSelectByIdVO empSelectByIdVO = BeanUtil.copyProperties(emp, EmpSelectByIdVO.class);
+        //根据id去查询员工工作经历表
+        List<EmpExpr> empExprList = empExprMapper.selectList(new LambdaQueryWrapper<EmpExpr>().eq(EmpExpr::getEmpId, id));
+        //把同名的属性拷贝到vo中
+        empSelectByIdVO.setExprList(empExprList);
+        return empSelectByIdVO;
+    }
 
     @Override
     public PageResult<EmpListVO> selectEmpByPage(EmpListDTO dto) {
