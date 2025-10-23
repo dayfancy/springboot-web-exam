@@ -41,9 +41,13 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
     @Autowired
     private EmpExprMapper empExprMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteByIds(List<Integer> ids) {
+        //批量删除员工
         empMapper.deleteBatchIds(ids);
+        //批量删除员工工作经历表
+        empExprMapper.delete(new LambdaQueryWrapper<EmpExpr>().in(EmpExpr::getEmpId, ids));
     }
 
     @Transactional(rollbackFor = Exception.class)
