@@ -15,9 +15,9 @@ logging:
 
 aliyun:
   oss:
-    endpoint: https://oss-cn-beijing.aliyuncs.com
-    bucketName: java-ai
-    region: cn-beijing
+    endpoint: https://oss-cn-hangzhou.aliyuncs.com
+    bucket-name: javaweb-rightsquare2025
+    region: cn-hangzhou
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
