@@ -41,6 +41,11 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
     @Autowired
     private EmpExprMapper empExprMapper;
 
+    @Override
+    public void deleteByIds(List<Integer> ids) {
+        empMapper.deleteBatchIds(ids);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateEmp(EmpUpdateDTO dto) {

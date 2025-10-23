@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 员工管理Controller
  */
@@ -27,6 +29,14 @@ public class EmpController {
     @PutMapping
     public Result updateEmp(@RequestBody EmpUpdateDTO dto) {
         empService.updateEmp(dto);
+        return Result.success();
+    }
+    /**
+     * 批量删除员工
+     */
+    @DeleteMapping("/{ids}")
+    public Result deleteByIds(@PathVariable List<Integer> ids) {
+        empService.deleteByIds(ids);
         return Result.success();
     }
 

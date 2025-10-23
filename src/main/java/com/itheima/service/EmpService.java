@@ -9,8 +9,11 @@ import com.itheima.entity.LoginInfo;
 import com.itheima.vo.EmpListVO;
 import com.itheima.vo.EmpSelectByIdVO;
 
+import java.util.List;
+
 public interface EmpService extends IService<Emp> {
 
+    void deleteByIds(List<Integer> ids);
     /**
      * 修改员工信息
      */

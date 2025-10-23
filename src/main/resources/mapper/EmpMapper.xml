@@ -23,6 +23,6 @@
                 AND e.entry_date <![CDATA[ <= ]]> #{dto.end}
             </if>
         </where>
-        ORDER BY e.entry_date DESC
+        ORDER BY e.update_time DESC
     </select>
 </mapper>
