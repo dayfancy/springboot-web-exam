@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
+@SuppressWarnings("all")
 public class LoginController {
 
     @Autowired

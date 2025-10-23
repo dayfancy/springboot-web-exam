@@ -1,5 +1,6 @@
 package com.itheima.filter;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.itheima.utils.JwtUtils;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -10,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 @Slf4j
-@WebFilter(urlPatterns = "/*")
+@WebFilter("/*")
 public class TokenFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -21,7 +22,7 @@ public class TokenFilter implements Filter {
         String requestURI = request.getRequestURI(); // /employee/login
 
         //2. 判断是否是登录请求, 如果路径中包含 /login, 说明是登录操作, 放行
-        if (requestURI.contains("/login")){
+        if (ObjectUtil.equals(requestURI, "/login")){
             log.info("登录请求, 放行");
             filterChain.doFilter(request, response);
             return;
