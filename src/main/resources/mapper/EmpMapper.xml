@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.EmpMapper">
+
+
+    <select id="selectEmpByPage" resultType="com.itheima.vo.EmpListVO">
+        SELECT e.*, d.name AS deptName
+        FROM emp e
+        LEFT JOIN dept d ON e.dept_id = d.id
+        <where>
+            <if test="dto.name != null and dto.name !=''">
+                AND e.name LIKE CONCAT('%',#{dto.name},'%')
+            </if>
+            <if test="dto.gender != null">
+                AND e.gender = #{dto.gender}
+            </if>
+            <if test="dto.begin != null">
+                AND e.entry_date >= #{dto.begin}
+            </if>
+            <if test="dto.end != null">
+                AND e.entry_date <![CDATA[ <= ]]> #{dto.end}
+            </if>
+        </where>
+        ORDER BY e.entry_date DESC
+    </select>
+</mapper>
