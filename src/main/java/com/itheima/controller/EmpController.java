@@ -3,6 +3,7 @@ package com.itheima.controller;
 import com.itheima.common.PageResult;
 import com.itheima.common.Result;
 import com.itheima.dto.EmpListDTO;
+import com.itheima.dto.EmpUpdateDTO;
 import com.itheima.entity.Emp;
 import com.itheima.service.EmpService;
 import com.itheima.vo.EmpListVO;
@@ -22,6 +23,12 @@ public class EmpController {
 
     @Autowired
     private EmpService empService;
+
+    @PutMapping
+    public Result updateEmp(@RequestBody EmpUpdateDTO dto) {
+        empService.updateEmp(dto);
+        return Result.success();
+    }
 
     /**
      * 根据ID查询员工详细信息

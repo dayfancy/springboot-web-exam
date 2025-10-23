@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.common.PageResult;
 import com.itheima.dto.EmpListDTO;
+import com.itheima.dto.EmpUpdateDTO;
 import com.itheima.entity.Emp;
 import com.itheima.entity.EmpExpr;
 import com.itheima.entity.LoginInfo;
@@ -39,6 +40,26 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
     private EmpMapper empMapper;
     @Autowired
     private EmpExprMapper empExprMapper;
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateEmp(EmpUpdateDTO dto) {
+        //根据dto的数据更新员工信息
+        Emp emp = BeanUtil.copyProperties(dto, Emp.class);
+        //更新时间
+        emp.setUpdateTime(LocalDateTime.now());
+        empMapper.updateById(emp);
+       // 更新员工工作经历表
+        List<EmpExpr> exprList = dto.getExprList();
+        //删除原来的数据
+        empExprMapper.delete(new LambdaQueryWrapper<EmpExpr>().eq(EmpExpr::getEmpId, dto.getId()));
+        //插入新的数据
+        if(exprList != null && exprList.size() > 0){
+            exprList.forEach(empExpr -> empExpr.setEmpId(dto.getId()));
+            empExprMapper.insert(exprList);
+        }
+    }
+
     @Override
     public EmpSelectByIdVO selectById(Integer id) {
         //根据id查询员工信息
