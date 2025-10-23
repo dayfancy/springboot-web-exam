@@ -115,6 +115,7 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
         LambdaQueryWrapper<Emp> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Emp::getUsername, emp.getUsername());
         Emp e = empMapper.selectOne(wrapper);
+        //把传过来的员工密码进行md5加密
 
         //2. 判断是否存在
         if(e == null){
@@ -123,7 +124,7 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
         }
 
         //3. 判断: 密码是否一致
-        if(!emp.getPassword().equals(DigestUtils.md5DigestAsHex(e.getPassword().getBytes()))){
+        if(!e.getPassword().equals(DigestUtils.md5DigestAsHex(emp.getPassword().getBytes()))){
             log.info("登录失败, 密码错误");
             throw new BusinessException("密码错误");
         }
